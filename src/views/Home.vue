@@ -2,7 +2,7 @@
     <section class="list-container">
         <div class="surah-list">
             <Sura
-                :to="{ name: 'showSuraContent', params: { id: i + 1 } }"
+                :to="{ name: 'showSuraContent', params: { id: i + 1 } } "
                 v-for="(item, i) in sura"
                 :key="i"
                 :title="item"

@@ -3,21 +3,41 @@
         <div class="header-inner">
             <div class="first-part-header">
                 <div class="menu">
-                    <img src="./assets/img/hamburger.svg" alt />
+                    <!-- <img src="./assets/img/hamburger.svg" alt /> -->
                 </div>
                 <router-link to='/'>قرآن کریم</router-link>
             </div>
             <div class="t-selector">
                 <span>ترجمه</span>
-                <select class="t-select" name="locale">
-                    <option value="fa">انصاریان</option>
-                    <option value="en">ملکی</option>
-                    <option value="en">مکارم</option>
+                <select @change="translatorChanger" class="t-select" name="locale" v-model='translate'>
+                    <option value="ansarian">انصاریان</option>
+                    <option value="maleki">ملکی</option>
+                    <option value="makarem">مکارم</option>
                 </select>
             </div>
         </div>
     </header>
 </template>
+
+<script lang="ts">
+import { ref } from "@vue/reactivity";
+import {  useStore } from "vuex";
+
+export default {
+    setup(){
+        const store = useStore()
+        let translate = ref('ansarian');
+        function translatorChanger(){
+            store.dispatch('changeT',translate.value)
+            
+        }
+        return {
+            translate,
+            translatorChanger
+        }
+    }
+}
+</script>
 
 <style scoped>
 header {

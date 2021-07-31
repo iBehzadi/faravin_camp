@@ -1,4 +1,6 @@
 <template>
+<br><br><br><br>
+  <p>t {{tname}}</p>
     <section class="sura-container">
         <div class="aya" v-for="(aya, i) in ayas" :key="i">
             *{{ aya }}*{{ i + 1 }}
@@ -10,26 +12,34 @@
 
 <script lang="ts">
 
-import { computed } from "@vue/runtime-core";
+import { computed, watch } from "@vue/runtime-core";
 import { SuraList } from "../qdata";
 //@ts-ignore
 import * as quranTranslate from "../assets/tarjomeh/fa.translate"
 //@ts-ignore
 import * as quranText from "../qtext";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+
 export default {
     setup() {
-        const route: any = useRoute();
-        let ayaTranslate = quranTranslate.ansarian.split('\n');
+
+        const route: unknown = useRoute();
+        const store = useStore();
         let ayaList = quranText.ayat.split('\n');
         let result, ayas, translate;
-
+        let ayaTranslate = quranTranslate.makarem.split('\n');;
+        let tname = store.state.translator;
+        
+        watch(store.state.translator , ()=> {
+            tname= store.state.translator
+        })
         result = computed(() => {
             let sura = SuraList[route.params.id - 1];
             let start = sura[0];
             let end = start + sura[1];
             let aya = ayaList.slice(start, end);
-            aya[0]= aya[0].replace('بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ ','')
+            aya[0] = aya[0].replace('بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ ', '')
             let trs = ayaTranslate.slice(start, end);
             return { aya, trs };
         })
@@ -39,7 +49,8 @@ export default {
 
         return {
             ayas,
-            translate
+            translate,
+            tname
         }
     }
 }
