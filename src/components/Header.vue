@@ -2,51 +2,28 @@
     <header>
         <div class="header-inner">
             <div class="first-part-header">
-                <div class="menu">
-                    <!-- <img src="./assets/img/hamburger.svg" alt /> -->
-                </div>
                 <router-link to='/'>قرآن کریم</router-link>
-            </div>
-            <div class="t-selector">
-                <span>ترجمه</span>
-                <select @change="translatorChanger" class="t-select" name="locale" v-model='translate'>
-                    <option value="ansarian">انصاریان</option>
-                    <option value="maleki">ملکی</option>
-                    <option value="makarem">مکارم</option>
-                </select>
             </div>
         </div>
     </header>
 </template>
 
 <script lang="ts">
-import { ref } from "@vue/reactivity";
-import {  useStore } from "vuex";
 
 export default {
-    setup(){
-        const store = useStore()
-        let translate = ref('ansarian');
-        function translatorChanger(){
-            store.dispatch('changeT',translate.value)
-            
-        }
-        return {
-            translate,
-            translatorChanger
-        }
-    }
+    
 }
 </script>
 
 <style scoped>
+
 header {
-    background-color: #fff;
+    background-color: #00ccc2;
     left: 0;
     right: 0;
     top: 0;
     position: fixed;
-    box-shadow: 0 1px 0 0 #e1e1e4;
+    box-shadow: 0 1px 1px 2px #e1e1e4;
     z-index: 9;
 }
 a {
@@ -70,18 +47,5 @@ header a {
     align-items: center;
 }
 
-.menu {
-    margin-left: 20px;
-    cursor: pointer;
-}
 
-.t-select {
-    border: 1px solid cadetblue;
-    border-radius: 4px;
-    cursor: pointer;
-    color: #00acc2;
-    background-color: transparent;
-    position: relative;
-    margin-right: 10px;
-}
 </style>

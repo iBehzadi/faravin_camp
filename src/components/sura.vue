@@ -31,6 +31,9 @@ export default {
   border-radius: 4px;
   margin: 8px;
 }
+.sura:hover {
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .2)
+}
 .surah-name {
   color: #007bff;
   font-weight: 700;
