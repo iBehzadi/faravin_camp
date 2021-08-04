@@ -8,18 +8,44 @@ import {createStore} from "vuex"
 const store = createStore({
     state() {
         return {
-            translator : 'ansarian'
+            translator : 'ansarian',
+            ayaFontSize: 20,
+            trsFontSize: 18
         };
     },
     mutations: {
         changeTsname(state, newTranslator) {
             state.translator = newTranslator;
+        },
+        incAyaFontSize(state){
+            state.ayaFontSize ++;
+        },
+        decAyaFontSize(state){
+            state.ayaFontSize --;
+        },
+        incTrsFontSize(state){
+            state.trsFontSize ++;
+        },
+        decTrsFontSize(state){
+            state.trsFontSize --;
         }
     },
     actions: {
         changeT(state, newTranslator) {
             state.commit("changeTsname", newTranslator);
-        }
+        },
+        ayaFontInc(state){
+            state.commit("incAyaFontSize")
+        },
+        ayaFontDec(state){
+            state.commit("decAyaFontSize")
+        },
+        trsFontInc(state){
+            state.commit("incTrsFontSize")
+        },
+        trsFontDec(state){
+            state.commit("decTrsFontSize")
+        },
     }
 });
 

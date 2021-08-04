@@ -1,9 +1,10 @@
 <template>
     <header>
         <div class="header-inner">
-            <div class="first-part-header">
+            <div class="logo-header">
                 <router-link to='/'>قرآن کریم</router-link>
             </div>
+
         </div>
     </header>
 </template>
@@ -25,11 +26,11 @@ header {
     position: fixed;
     box-shadow: 0 1px 1px 2px #e1e1e4;
     z-index: 9;
+    
 }
-a {
-    text-decoration: none;
-}
+
 header a {
+    text-decoration: none;
     color: #000;
 }
 
@@ -42,10 +43,6 @@ header a {
     margin: 0 auto;
 }
 
-.first-part-header {
-    display: flex;
-    align-items: center;
-}
 
 
 </style>

@@ -1,5 +1,6 @@
 <template>
     <div class="setting-container">
+        <span class="icon-menu" @click="openNav"></span>
         <div class="t-selector">
             <span>مترجم</span>
             <select
@@ -15,12 +16,36 @@
         </div>
     </div>
 
+    <div id="setting-nav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" @click="closeNav">x</a>
+        <p>اندازه فونت</p>
+        <div class="counter">
+            <div class="fsize">
+                <button @click="store.dispatch('ayaFontInc')">+</button>
+                <span>عربی</span>
+                <button @click="store.dispatch('ayaFontDec')">-</button>
+            </div>
+            <div class="fsize">
+                <button @click="store.dispatch('trsFontInc')">+</button>
+                <span>ترجمه</span>
+                <button @click="store.dispatch('trsFontDec')">-</button>
+            </div>
+        </div>
+        <div class="ghari">
+            <span>قاری</span>
+            <select class="t-select">
+                    <option value="ansarian">منشاوی</option>
+                    <option value="maleki">خلیل الحصری</option>
+            </select>
+        </div>
+    </div>
+
     <section class="sura-container">
-        <div class="ayas" v-for="(aya, i) in ayas" :key="i">
+        <div class="ayas" :style="{'font-size': store.state.ayaFontSize + 'px' }" v-for="(aya, i) in ayas" :key="i">
             <span class="aya">({{ aya }}).{{ i + 1 }}</span>
             <span class="copy icon-copy" @click="copyAya(aya, translate[i])"></span>
             <br />
-            <span class="trs">{{ translate[i] }}</span>
+            <span class="trs" :style="{'font-size': store.state.trsFontSize + 'px' }" >{{ translate[i] }}</span>
         </div>
     </section>
 </template>
@@ -50,20 +75,20 @@ export default {
         function translatorChanger() {
             store.dispatch('changeT', translateSelector.value)
         }
+       
+
         watch(tname, () => {
             if (tname.value == 'ansarian') {
-                console.log('ansarian')
                 ayaTranslate = computed(() => quranTranslate.ansarian.split('\n'))
             } else if (tname.value == 'maleki') {
-                console.log('maleki')
                 ayaTranslate = computed(() => quranTranslate.maleki)
 
             } else {
-                console.log('makarem')
                 ayaTranslate = computed(() => quranTranslate.makarem.split('\n'))
-
             }
         })
+        
+        
         function copyAya(aya: string, trs: string) {
             navigator.clipboard.writeText(aya + "/" + trs)
 
@@ -78,8 +103,17 @@ export default {
             return { aya, trs };
         })
 
+        function openNav() {
+            document.getElementById("setting-nav").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("setting-nav").style.width = "0";
+        }
+
         ayas = result.value.aya;
-        translate = result.value.trs;
+        translate = result.value.trs 
+        
 
 
         return {
@@ -87,7 +121,11 @@ export default {
             translate,
             copyAya,
             translateSelector,
-            translatorChanger
+            translatorChanger,
+            openNav,
+            closeNav,
+            store,
+            
         }
     }
 }
@@ -101,10 +139,16 @@ export default {
 .setting-container {
     height: 45px;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #f3f3f4;
     position: sticky;
     top: 48px;
-    z-index: 9;
+    z-index: 8;
+}
+.t-selector {
+    margin-left: 10px;
 }
 .t-select {
     border: 1px solid cadetblue;
@@ -116,6 +160,7 @@ export default {
     margin-right: 10px;
     padding: 5px;
 }
+
 .t-select:focus {
     border: 1px solid cadetblue;
 }
@@ -142,5 +187,72 @@ export default {
     top: 5px;
     cursor: pointer;
     margin-right: 5px;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 8;
+    top: 0;
+    right: 0;
+    margin-top: 40px;
+    background-color: #fff;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+}
+
+.sidenav span {
+    padding: 0 5px;
+    font-size: 18px;
+}
+.sidenav p {
+    right: 0;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    font-size: 36px;
+}
+.icon-menu {
+    font-size: 30px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.fsize {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+}
+.counter {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    
+}
+.ghari {
+    margin-top: 20px;
+}
+.sidenav button {
+    background-color: #fbfbfb;
+    border: 1px solid #dadbde;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    color: #999aa2;
+
+}
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+    
 }
 </style>
