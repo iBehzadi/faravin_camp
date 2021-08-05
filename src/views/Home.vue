@@ -53,6 +53,15 @@ export default {
     margin: 0;
     padding: 0;
 }
+@font-face {
+    font-family: Yekan;
+    font-style: normal;
+    font-weight: normal;
+    src: url("../assets/fonts/yekan/Yekan.ttf") format("ttf");
+    src: url("../assets/fonts/yekan/Yekan.eot") format("eot");
+    src: url("../assets/fonts/yekan/Yekan.woff") format("woff");
+    src: url("../assets/fonts/yekan/Yekan.woff2") format("woff2");
+}
 a {
     text-decoration: none;
     color: #000;
@@ -117,15 +126,7 @@ a {
     outline: none;
 }
 
-@font-face {
-    font-family: Yekan;
-    font-style: normal;
-    font-weight: normal;
-    src: url("../assets/fonts/yekan/Yekan.ttf") format("ttf");
-    src: url("../assets/fonts/yekan/Yekan.eot") format("eot");
-    src: url("../assets/fonts/yekan/Yekan.woff") format("woff");
-    src: url("../assets/fonts/yekan/Yekan.woff2") format("woff2");
-}
+
 
 .surah-list {
     display: flex;

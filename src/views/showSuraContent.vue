@@ -3,12 +3,7 @@
         <span class="icon-menu" @click="openNav"></span>
         <div class="t-selector">
             <span>مترجم</span>
-            <select
-                @change="translatorChanger"
-                class="t-select"
-                name="locale"
-                v-model="translateSelector"
-            >
+            <select @change="translatorChanger" class="t-select" v-model="translateSelector">
                 <option value="ansarian">انصاریان</option>
                 <option value="maleki">ملکی</option>
                 <option value="makarem">مکارم</option>
@@ -41,18 +36,18 @@
     </div>
 
     <section class="sura-container">
-        <div class="ayas" :style="{'font-size': store.state.ayaFontSize + 'px' }" v-for="(aya, i) in ayas" :key="i">
-            <span class="aya">({{ aya }}).{{ i + 1 }}</span>
-            <span class="copy icon-copy" @click="copyAya(aya, translate[i])"></span>
+        <div class="ayas" :style="{'font-size': store.state.ayaFontSize + 'px' }" v-for="(aya, i) in ayasText" :key="i">
+            <span class="aya">({{ aya }}).{{  i + 1  }}</span>
+            <span class="copy icon-copy" @click="copyAya(aya, ayaTranslateText[i])"></span>
             <br />
-            <span class="trs" :style="{'font-size': store.state.trsFontSize + 'px' }" >{{ translate[i] }}</span>
+            <span class="trs" :style="{'font-size': store.state.trsFontSize + 'px' }" >{{ ayaTranslateText[i] }}</span>
         </div>
     </section>
 </template>
 
 <script lang="ts">
 
-import { computed, ref, watch } from "@vue/runtime-core";
+import { computed, ref } from "@vue/runtime-core";
 import { SuraList } from "../qdata";
 //@ts-ignore
 import * as quranTranslate from "../assets/tarjomeh/fa.translate"
@@ -64,44 +59,49 @@ import { useStore } from "vuex";
 export default {
     setup() {
 
-        const route: unknown = useRoute();
+        const route = useRoute();
         const store = useStore();
         let ayaList = quranText.ayat.split('\n');
-        let result, ayas, translate;
-        let ayaTranslate = computed(() => quranTranslate.ansarian.split('\n'))
-        let tname = computed(() => store.state.translator)
+        let ayasText, ayaTranslateText;
+        let translateSelector = ref(store.state.translator);
+        
+        //let tname = computed(() => store.state.translator)
 
-        let translateSelector = ref('ansarian');
+        let ayaTranslate = computed(()=> {
+            if(store.state.translator === 'ansarian') {
+                return quranTranslate.ansarian.split('\n')
+            } else if (store.state.translator === 'maleki') {
+                return quranTranslate.maleki
+            } else {
+                return quranTranslate.makarem.split('\n')
+            }
+        })
+
+        //let ayaTranslate = computed(()=> quranTranslate.ansarian.split('\n'))
         function translatorChanger() {
             store.dispatch('changeT', translateSelector.value)
         }
        
-
-        watch(tname, () => {
-            if (tname.value == 'ansarian') {
-                ayaTranslate = computed(() => quranTranslate.ansarian.split('\n'))
-            } else if (tname.value == 'maleki') {
-                ayaTranslate = computed(() => quranTranslate.maleki)
-
-            } else {
-                ayaTranslate = computed(() => quranTranslate.makarem.split('\n'))
-            }
+        let position = computed(()=> {
+            let sura = SuraList[route.params.id - 1];
+            let start = sura[0];
+            let name = sura[4];
+            let end = start + sura[1];
+            return {start, end}
         })
-        
-        
+
         function copyAya(aya: string, trs: string) {
             navigator.clipboard.writeText(aya + "/" + trs)
 
         }
-        result = computed(() => {
-            let sura = SuraList[route.params.id - 1];
-            let start = sura[0];
-            let end = start + sura[1];
-            let aya = ayaList.slice(start, end);
+
+        ayasText = computed(() => {
+            let aya = ayaList.slice(position.value.start, position.value.end);
             aya[0] = aya[0].replace('بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ ', '')
-            let trs = ayaTranslate.value.slice(start, end)
-            return { aya, trs };
+            return aya;
         })
+
+        ayaTranslateText = computed(()=> ayaTranslate.value.slice(position.value.start, position.value.end))
 
         function openNav() {
             document.getElementById("setting-nav").style.width = "250px";
@@ -111,20 +111,18 @@ export default {
             document.getElementById("setting-nav").style.width = "0";
         }
 
-        ayas = result.value.aya;
-        translate = result.value.trs 
-        
 
 
         return {
-            ayas,
-            translate,
+            ayasText,
+            ayaTranslateText,
             copyAya,
             translateSelector,
             translatorChanger,
             openNav,
             closeNav,
             store,
+            ayaTranslate
             
         }
     }

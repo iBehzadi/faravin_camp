@@ -1,15 +1,18 @@
 <template>
   <Header/>
   <router-view></router-view>
+  <Footer/>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Header from "./components/Header.vue"
+import Footer from "./components/Footer.vue"
 export default defineComponent({
   name: 'App',
   components: {
-    Header
+    Header,
+    Footer
   },
 
 })
@@ -21,7 +24,7 @@ export default defineComponent({
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  
+  color: #2c3e50; 
 }
+
 </style>
