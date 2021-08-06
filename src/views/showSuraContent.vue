@@ -37,12 +37,17 @@
 
     <section class="sura-container">
         <div class="ayas" :style="{'font-size': store.state.ayaFontSize + 'px' }" v-for="(aya, i) in ayasText" :key="i">
-            <span class="aya">({{ aya }}).{{  i + 1  }}</span>
             <span class="copy icon-copy" @click="copyAya(aya, ayaTranslateText[i])"></span>
+            <span class="play icon-play3"></span>
+            <span class="play icon-pause2 hide"></span>
+            <span class="aya">({{ aya }}).{{  i + 1  }}</span>
+            
             <br />
             <span class="trs" :style="{'font-size': store.state.trsFontSize + 'px' }" >{{ ayaTranslateText[i] }}</span>
         </div>
     </section>
+
+    <Player></Player>
 </template>
 
 <script lang="ts">
@@ -55,8 +60,11 @@ import * as quranTranslate from "../assets/tarjomeh/fa.translate"
 import * as quranText from "../qtext";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
-
+import Player from "../components/Player.vue"
 export default {
+    components: {
+        Player,
+    },
     setup() {
 
         const route = useRoute();
@@ -91,7 +99,7 @@ export default {
         })
 
         function copyAya(aya: string, trs: string) {
-            navigator.clipboard.writeText(aya + "/" + trs)
+            navigator.clipboard.writeText(aya + "/" + trs);
 
         }
 
@@ -184,9 +192,19 @@ export default {
     left: 5px;
     top: 5px;
     cursor: pointer;
-    margin-right: 5px;
 }
-
+.hide {
+    display: none;
+}
+.ayas .play {
+    position: absolute;
+    left: 35px;
+    top: 5px;
+    cursor: pointer;
+}
+.ayas .icon-copy:hover,.play:hover {
+    color: blue;
+}
 .sidenav {
     height: 100%;
     width: 0;
@@ -222,7 +240,9 @@ export default {
     cursor: pointer;
     margin-right: 10px;
 }
-
+.icon-menu:hover {
+    color: blue;
+}
 .fsize {
     display: flex;
     align-items: center;
