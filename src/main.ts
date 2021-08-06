@@ -10,12 +10,16 @@ const store = createStore({
         return {
             translator : 'ansarian',
             ayaFontSize: 20,
-            trsFontSize: 18
+            trsFontSize: 18,
+            textFontFamily: 'Yekan'
         };
     },
     mutations: {
         changeTsname(state, newTranslator) {
             state.translator = newTranslator;
+        },
+        changeFont(state, newFont) {
+            state.textFontFamily = newFont;
         },
         incAyaFontSize(state){
             state.ayaFontSize ++;
@@ -33,6 +37,9 @@ const store = createStore({
     actions: {
         changeT(state, newTranslator) {
             state.commit("changeTsname", newTranslator);
+        },
+        changeF(state, newFont) {
+            state.commit("changeFont", newFont);
         },
         ayaFontInc(state){
             state.commit("incAyaFontSize")

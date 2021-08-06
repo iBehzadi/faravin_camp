@@ -49,7 +49,6 @@ export default {
 <style>
 * {
     direction: rtl;
-    font-family: Yekan, sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -61,6 +60,18 @@ export default {
     src: url("../assets/fonts/yekan/Yekan.eot") format("eot");
     src: url("../assets/fonts/yekan/Yekan.woff") format("woff");
     src: url("../assets/fonts/yekan/Yekan.woff2") format("woff2");
+}
+@font-face {
+    font-family: Vazir;
+    font-style: normal;
+    font-weight: normal;
+    src: url("../assets/fonts/vazir/Vazir-Black-WOL.ttf") format("ttf");
+    src: url("../assets/fonts/vazir/Vazir-Bold-WOL.eot") format("eot");
+    src: url("../assets/fonts/vazir/Vazir-Bold-WOL.woff") format("woff");
+    src: url("../assets/fonts/vazir/Vazir-Light-WOL.woff2") format("woff2");
+}
+body {
+    font-family: Yekan, sans-serif;
 }
 a {
     text-decoration: none;

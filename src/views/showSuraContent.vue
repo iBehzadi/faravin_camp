@@ -25,6 +25,14 @@
                 <span>ترجمه</span>
                 <button @click="store.dispatch('trsFontDec')">-</button>
             </div>
+            
+        </div>
+        <div class="text-font">
+                <span>فونت</span>
+                <select class="t-select" @change="fontChanger" v-model="fontSelector">
+                    <option value="Yekan">یکان</option>
+                    <option value="Vazir">وزیر</option>
+            </select>
         </div>
         <div class="ghari">
             <span>قاری</span>
@@ -33,10 +41,11 @@
                     <option value="maleki">خلیل الحصری</option>
             </select>
         </div>
+        
     </div>
 
     <section class="sura-container">
-        <div class="ayas" :style="{'font-size': store.state.ayaFontSize + 'px' }" v-for="(aya, i) in ayasText" :key="i">
+        <div class="ayas" :style="{'font-size': store.state.ayaFontSize + 'px', 'font-family': store.state.textFontFamily }" v-for="(aya, i) in ayasText" :key="i">
             <span class="copy icon-copy" @click="copyAya(aya, ayaTranslateText[i])"></span>
             <span class="play icon-play3"></span>
             <span class="play icon-pause2 hide"></span>
@@ -61,6 +70,8 @@ import * as quranText from "../qtext";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import Player from "../components/Player.vue"
+
+
 export default {
     components: {
         Player,
@@ -72,6 +83,7 @@ export default {
         let ayaList = quranText.ayat.split('\n');
         let ayasText, ayaTranslateText;
         let translateSelector = ref(store.state.translator);
+        let fontSelector = ref(store.state.textFontFamily);
         
         //let tname = computed(() => store.state.translator)
 
@@ -87,9 +99,11 @@ export default {
 
         //let ayaTranslate = computed(()=> quranTranslate.ansarian.split('\n'))
         function translatorChanger() {
-            store.dispatch('changeT', translateSelector.value)
+            store.dispatch('changeT', translateSelector.value);
         }
-       
+       function fontChanger(){
+           store.dispatch('changeF', fontSelector.value);
+       }
         let position = computed(()=> {
             let sura = SuraList[route.params.id - 1];
             let start = sura[0];
@@ -130,8 +144,9 @@ export default {
             openNav,
             closeNav,
             store,
-            ayaTranslate
-            
+            ayaTranslate,
+            fontSelector,
+            fontChanger
         }
     }
 }
@@ -164,6 +179,7 @@ export default {
     background-color: #fff;
     position: relative;
     margin-right: 10px;
+    font-family: Yekan, Helvetica, Arial, sans-serif;
     padding: 5px;
 }
 
@@ -255,6 +271,9 @@ export default {
     
 }
 .ghari {
+    margin-top: 20px;
+}
+.text-font {
     margin-top: 20px;
 }
 .sidenav button {
