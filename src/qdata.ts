@@ -115,7 +115,6 @@ export const SuraList = [
 	[6221, 4, 22, 1, 'الإخلاص', "Al-Ikhlaas", 'Sincerity', 'Meccan'],
 	[6225, 5, 20, 1, 'الفلق', "Al-Falaq", 'The Dawn', 'Meccan'],
 	[6230, 6, 21, 1, 'الناس', "An-Naas", 'Mankind', 'Meccan'],
-	[6236, 1]
 ] as const;
 
 
@@ -199,15 +198,6 @@ export const HizbQaurter = [
 	[78, 1], 	[80, 1], 	[82, 1], 	[84, 1],
 	[87, 1], 	[90, 1], 	[94, 1], 	[100, 9],
 	[115, 1] 
-];
-
-//------------------ Manzil Data ---------------------
-
-export const Manzil = [
-	// [sura, aya]
-	[],	
-	[1, 1], 	[5, 1], 	[10, 1], 	[17, 1],
-	[26, 1], 	[37, 1], 	[50, 1]
 ];
 
 
@@ -463,7 +453,6 @@ export const Page = [
 
 export const Sajda = [
 	// [sura, aya, type]
-	[],
 	[7, 206, 'recommended'],
 	[13, 15, 'recommended'],
 	[16, 50, 'recommended'],

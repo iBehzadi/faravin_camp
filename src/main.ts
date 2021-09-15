@@ -15,7 +15,7 @@ const store = createStore({
         };
     },
     mutations: {
-        changeTsname(state, newTranslator) {
+        changeTsname(state:any, newTranslator) {
             state.translator = newTranslator;
         },
         changeFont(state, newFont) {

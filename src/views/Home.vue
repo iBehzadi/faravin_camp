@@ -16,6 +16,7 @@
                 v-for="(item, i) in sura"
                 :key="i"
                 :title="item"
+                :mec-or-med="mecOrMed[i]"
                 :number="i + 1"
             ></Sura>
         </div>
@@ -34,13 +35,20 @@ export default {
     },
     setup() {
         let sura = [];
-        for (let i = 0; i < SuraList.length - 1; i++) {
+        let mecOrMed = [];
+        for (let i = 0; i < SuraList.length ; i++) {
             sura[i] = SuraList[i][4];
+            if(SuraList[i][7] == "Meccan") {
+                mecOrMed[i] = "مکه";
+            } else {
+                mecOrMed[i] = "مدینه";
+            }
+             
         }
 
         return {
             sura,
-
+            mecOrMed
         };
     },
 }
@@ -132,7 +140,6 @@ a {
     border: none;
     width: 80%;
     font-size: 1rem;
-    border-radius: 30px;
     margin-right: 15px;
     outline: none;
 }

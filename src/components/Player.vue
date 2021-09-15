@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 @import url("../assets/icon-style.css");
 .player {
     height: 60px;
@@ -32,22 +32,23 @@
     right: 0;
     bottom: 0;
     z-index: 9;
-}
-.player-control button {
-    border-radius: 100%;
-    margin: 0 5px;
-    cursor: pointer;
-    border: none;
-}
-
-.player-control span {
-    display: flex;
-    justify-content: center;
-    color: #000;
-    font-size: 2rem;
-}
-.player-control span:hover {
-    color: #00ccc2;
+    .player-control {
+        button {
+            border-radius: 100%;
+            margin: 0 5px;
+            cursor: pointer;
+            border: none;
+        }
+        span {
+            display: flex;
+            justify-content: center;
+            color: #000;
+            font-size: 2rem;
+        }
+        span:hover {
+            color: #00ccc2;
+        }
+    }
 }
 .p-hide {
     display: none;

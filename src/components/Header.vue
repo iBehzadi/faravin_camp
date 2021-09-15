@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 header {
     background-color: #00ccc2;

@@ -5,6 +5,7 @@
       <div class="surah-name">
         <span>سوره {{ title }}</span>
       </div>
+      <span>{{mecOrMed}}</span>
     </div>
   </router-link>
 </template>
@@ -15,7 +16,7 @@
 
 <script lang="ts">
 export default {
-  props: ["number", "title"],
+  props: ["number", "title","mecOrMed"],
 
 };
 </script>
