@@ -1,58 +1,49 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 //@ts-ignore
-import router from "./router/index.js"
-import {createStore} from "vuex"
+import router from "./router/index.ts"
+import { createStore } from "vuex"
 
 
 const store = createStore({
     state() {
         return {
-            translator : 'ansarian',
+            translator: 'ansarian',
             ayaFontSize: 20,
             trsFontSize: 18,
-            textFontFamily: 'Yekan'
+            textFontFamily: 'Yekan',
+
         };
     },
     mutations: {
-        changeTsname(state:any, newTranslator) {
+        changeTsname(state: any, newTranslator) {
             state.translator = newTranslator;
         },
         changeFont(state, newFont) {
             state.textFontFamily = newFont;
         },
-        incAyaFontSize(state){
-            state.ayaFontSize ++;
+        ayaFontSize(state, newSize) {
+            state.ayaFontSize = newSize;
         },
-        decAyaFontSize(state){
-            state.ayaFontSize --;
-        },
-        incTrsFontSize(state){
-            state.trsFontSize ++;
-        },
-        decTrsFontSize(state){
-            state.trsFontSize --;
+        trsFontSize(state, newSize) {
+            state.trsFontSize = newSize;
         }
     },
     actions: {
-        changeT(state, newTranslator) {
-            state.commit("changeTsname", newTranslator);
+        changeT(store, newTranslator) {
+
+            store.commit("changeTsname", newTranslator);
+
         },
-        changeF(state, newFont) {
-            state.commit("changeFont", newFont);
+        changeF(store, newFont) {
+            store.commit("changeFont", newFont);
         },
-        ayaFontInc(state){
-            state.commit("incAyaFontSize")
+        ayaFontChange(store, newSize) {
+            store.commit("ayaFontSize", newSize);
         },
-        ayaFontDec(state){
-            state.commit("decAyaFontSize")
-        },
-        trsFontInc(state){
-            state.commit("incTrsFontSize")
-        },
-        trsFontDec(state){
-            state.commit("decTrsFontSize")
-        },
+        trsFontChange(store, newSize) {
+            store.commit("trsFontSize", newSize);
+        }
     }
 });
 

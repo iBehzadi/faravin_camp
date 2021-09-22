@@ -2,6 +2,7 @@
 <template>
     <div class="setting-container">
         <span class="icon-menu" @click="openNav"></span>
+
         <div class="t-selector">
             <span>مترجم</span>
             <select @change="translatorChanger" class="t-select" v-model="translateSelector">
@@ -15,18 +16,33 @@
     <div id="setting-nav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" @click="closeNav">x</a>
         <p>اندازه فونت</p>
-        <div class="counter">
             <div class="fsize">
-                <button @click="store.dispatch('ayaFontInc')">+</button>
                 <span>عربی</span>
-                <button @click="store.dispatch('ayaFontDec')">-</button>
-            </div>
-            <div class="fsize">
-                <button @click="store.dispatch('trsFontInc')">+</button>
+                <select class="t-select" @change="ayaFontSizeChange" v-model="ayaFontSize">
+                    <option value="14">14</option>
+                    <option value="16">16</option>
+                    <option value="18">18</option>
+                    <option value="20">20</option>
+                    <option value="22">22</option>
+                    <option value="24">24</option>
+                    <option value="26">26</option>
+                    <option value="28">28</option>
+                    <option value="30">30</option>
+                </select>
                 <span>ترجمه</span>
-                <button @click="store.dispatch('trsFontDec')">-</button>
+                <select class="t-select" @change="trsFontSizeChange" v-model="trsFontSize">
+                    <option value="14">14</option>
+                    <option value="16">16</option>
+                    <option value="18">18</option>
+                    <option value="20">20</option>
+                    <option value="22">22</option>
+                    <option value="24">24</option>
+                    <option value="26">26</option>
+                    <option value="28">28</option>
+                    <option value="30">30</option>
+                </select>
             </div>
-        </div>
+            
         <div class="text-font">
             <span>فونت</span>
             <select class="t-select" @change="fontChanger" v-model="fontSelector">
@@ -44,10 +60,15 @@
     </div>
 
     <section class="sura-container">
-        <span>سوره {{position.name}}</span> <br>
-        <span>محل نزول : {{ position.mecOrMed }}</span> <br>
+        <span>سوره {{ position.name }}</span>
+        <br />
+        <span>محل نزول : {{ position.mecOrMed }}</span>
+        <br />
         <div class="ayas">
-            <span :style="{ fontSize: store.state.ayaFontSize + 'px', fontFamily: store.state.textFontFamily }" v-if="position.name != 'الفاتحة' ">بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ</span>
+            <span
+                :style="{ fontSize: store.state.ayaFontSize + 'px', fontFamily: store.state.textFontFamily }"
+                v-if="position.name != 'الفاتحة'"
+            >بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ</span>
         </div>
         <div
             class="ayas"
@@ -56,25 +77,32 @@
             :key="i"
         >
             <span class="copy icon-copy" @click="copyAya(aya, ayaTranslateText[i])"></span>
+
             <span class="play icon-play3" @click="playAudio(i)"></span>
             <span class="play icon-pause2 hide" @click="pauseAudio(i)"></span>
-            <span class="share icon-share2" @click="shareText(aya,position.name,i, ayaTranslateText[i])"></span>
+            <span
+                class="share icon-share2"
+                @click="shareText(aya, position.name, i, ayaTranslateText[i])"
+            ></span>
             <span class="aya">({{ aya }}).{{ i + 1 }}</span>
 
             <br />
-            <span class="trs" :style="{ fontSize: store.state.trsFontSize + 'px' }">{{ ayaTranslateText[i] }}</span>
+            <span
+                class="trs"
+                :style="{ fontSize: store.state.trsFontSize + 'px' }"
+            >{{ ayaTranslateText[i] }}</span>
         </div>
     </section>
 
-    <Player></Player>
+    <Player ref="player" :source="audioSrc"></Player>
 </template>
 
 <script lang="ts">
 
 import { computed, ref } from "@vue/runtime-core";
 import { SuraList } from "../qdata";
-import * as quranTranslate from "../assets/tarjomeh/fa.translate"
-import * as quranText from "../qtext";
+import { ansarian, makarem, maleki } from "../assets/tarjomeh/fa.translate"
+import { ayat } from "../qtext";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import Player from "../components/Player.vue"
@@ -88,40 +116,53 @@ export default {
 
         const route = useRoute();
         const store = useStore();
-        let ayaList = quranText.ayat.split('\n');
+        const player = ref();
+        let ayaList = ayat.split('\n');
+        var audioSrc = ref('');
         let ayaTranslateText;
         let translateSelector = ref(store.state.translator);
         let fontSelector = ref(store.state.textFontFamily);
-
+        let ayaFontSize = ref(store.state.ayaFontSize);
+        let trsFontSize = ref(store.state.trsFontSize);
         let ayaTranslate = computed(() => {
             if (store.state.translator === 'ansarian') {
-                return quranTranslate.ansarian.split('\n')
+                return ansarian.split('\n')
             } else if (store.state.translator === 'maleki') {
-                return quranTranslate.maleki
+                return maleki
             } else {
-                return quranTranslate.makarem.split('\n')
+                return makarem.split('\n')
             }
         })
 
-        
+
         function translatorChanger() {
             store.dispatch('changeT', translateSelector.value);
+            localStorage.setItem('translator', `${translateSelector.value}`);
         }
         function fontChanger() {
             store.dispatch('changeF', fontSelector.value);
+            localStorage.setItem('fontFamily', `${fontSelector.value}`);
+        }
+        function ayaFontSizeChange() {
+            store.dispatch('ayaFontChange', ayaFontSize.value);
+            localStorage.setItem('ayaFontSize', `${ayaFontSize.value}`);
+        }
+        function trsFontSizeChange() {
+            store.dispatch('trsFontChange', trsFontSize.value);
+            localStorage.setItem('trsFontSize', `${trsFontSize.value}`);
         }
         let position = computed(() => {
             let sura = SuraList[+route.params.id - 1];
             let start = sura[0];
             let name = sura[4];
-            let mecOrMed,temp = sura[7];
-            if(temp == "Meccan") {
+            let mecOrMed, temp = sura[7];
+            if (temp == "Meccan") {
                 mecOrMed = "مکه";
             } else {
                 mecOrMed = "مدینه";
             }
             let end = start + sura[1];
-            return { start, end,name,mecOrMed }
+            return { start, end, name, mecOrMed }
         })
 
         function copyAya(aya: string, trs: string) {
@@ -131,7 +172,7 @@ export default {
 
         let ayasText = computed(() => {
             let aya = ayaList.slice(position.value.start, position.value.end);
-            aya[0] = aya[0].replace('بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ ','')
+            aya[0] = aya[0].replace('بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ ', '')
             return aya;
         })
 
@@ -146,26 +187,24 @@ export default {
         }
 
         //editing need
-        function playAudio(i:number) {
-            event?.target?.classList.toggle('hide')
-            event?.target?.nextSibling.classList.toggle('hide')
-            
+        function playAudio(i: number) {
+            audioSrc.value = `https://www.everyayah.com/data/AbdulSamad_64kbps_QuranExplorer.Com/00100${i + 1}.mp3`;
+
         }
-        function pauseAudio(i:number){
-            event?.target?.classList.toggle('hide')
-            event?.target?.previousSibling.classList.toggle('hide')
+        function pauseAudio(i: number) {
+
         }
-        
+
         //sharing aya
-        async function shareText(aya:string,name:string ,number:number, translate:string) {
+        async function shareText(aya: string, name: string, number: number, translate: string) {
             let shareData = {
                 title: 'QuranApp',
-                text: `(سوره ${name} آیه ${number+1})\n ${aya} : ${translate}`,
+                text: `(سوره ${name} آیه ${number + 1})\n ${aya} : ${translate}`,
             }
             try {
                 await navigator.share(shareData)
                 console.log('success')
-            } catch(err) {
+            } catch (err) {
                 console.log(err)
             }
         }
@@ -183,7 +222,13 @@ export default {
             position,
             playAudio,
             pauseAudio,
-            shareText
+            shareText,
+            audioSrc,
+            ayaFontSize,
+            trsFontSize,
+            trsFontSizeChange,
+            ayaFontSizeChange
+
         }
     }
 }
@@ -191,6 +236,7 @@ export default {
 
 <style scoped>
 @import url("../assets/icon-style.css");
+@import url("../style/base.scss");
 .sura-container {
     margin-top: 60px;
 }
@@ -224,7 +270,7 @@ export default {
     border: 1px solid cadetblue;
 }
 .ayas {
-    font-size: 20px;
+    font-size: responsive;
     margin: 10px 20px;
     padding: 10px;
     background-color: #eef8e5;
@@ -240,7 +286,9 @@ export default {
 .ayas .trs {
     font-size: 18px;
 }
-.share,.copy, .play {
+.share,
+.copy,
+.play {
     position: absolute;
     cursor: pointer;
 }
@@ -260,14 +308,13 @@ export default {
     color: blue;
 }
 
-
 .share {
     left: 65px;
     top: 5px;
 }
 
 .sidenav {
-    height: 100%;
+    height: 30%;
     width: 0;
     position: fixed;
     z-index: 8;
@@ -278,7 +325,6 @@ export default {
     overflow-x: hidden;
     transition: 0.3s;
     padding-top: 60px;
-    
 }
 
 .sidenav span {
@@ -308,13 +354,10 @@ export default {
 .fsize {
     display: flex;
     align-items: center;
-    margin: 0 10px;
+    justify-content: space-around;
+    margin: 0 20px;
 }
-.counter {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-}
+
 .ghari {
     margin-top: 20px;
 }

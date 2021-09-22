@@ -1,10 +1,10 @@
 <template>
     <div class="player">
-        <div class="player-control">
+        <div class="player__control">
             <button>
                 <span class="icon-next2"></span>
             </button>
-            <button class="play">
+            <button class="play" @click="play1">
                 <span class="icon-play3"></span>
             </button>
             <button class="stop p-hide">
@@ -14,9 +14,37 @@
                 <span class="icon-previous2"></span>
             </button>
         </div>
-        <div class="player-bar"></div>
+        <!-- <audio ref="el" id="audio" >
+            <source src="https://www.everyayah.com/data/AbdulSamad_64kbps_QuranExplorer.Com/001001.mp3" type="audio/mp3">
+            مرورگر شما از فایل صوتی پشتیبانی نمی کند.
+        </audio> -->
+        <audio ref="el" id="audio" controls>
+            <source :src="source" type="audio/mp3">
+            مرورگر شما از فایل صوتی پشتیبانی نمی کند.
+        </audio>
     </div>
 </template>
+
+<script lang="ts">
+import { ref } from 'vue'
+export default {
+  props: ["source"],
+  setup(){
+      
+      const el = ref();
+      function play1(){
+          el.value.play();
+         console.log(el.value)
+      }
+
+
+      return {
+          play1,
+          el
+      }
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 @import url("../assets/icon-style.css");
@@ -32,7 +60,7 @@
     right: 0;
     bottom: 0;
     z-index: 9;
-    .player-control {
+    &__control {
         button {
             border-radius: 100%;
             margin: 0 5px;
@@ -44,9 +72,9 @@
             justify-content: center;
             color: #000;
             font-size: 2rem;
-        }
-        span:hover {
-            color: #00ccc2;
+            &:hover {
+                color: #00ccc2;
+            }
         }
     }
 }

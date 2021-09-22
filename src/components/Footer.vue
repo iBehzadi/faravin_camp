@@ -1,11 +1,11 @@
 <template>
-    <footer>
+    <footer class="footer">
         this is footer
     </footer>
 </template>
 
-<style scoped>
-footer {
+<style lang="scss" scoped>
+.footer {
     height: 100px;
     background-color: #00ccc2;
     box-shadow: 0 1px 1px 2px #e1e1e4;
