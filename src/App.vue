@@ -39,7 +39,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style lang="scss">
 @import url(./style/base.scss);
 
 #app {

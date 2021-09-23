@@ -1,6 +1,6 @@
 <template>
     <footer class="footer">
-        this is footer
+        <span>behzad</span>
     </footer>
 </template>
 

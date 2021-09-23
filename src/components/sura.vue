@@ -1,10 +1,8 @@
 <template>
   <router-link>
     <div class="sura">
-      <div class="sura-number">{{ number }}</div>
-      <div class="sura-name">
-        <span>سوره {{ title }}</span>
-      </div>
+      <div class="sura__number">{{ number }}</div>
+      <span class="sura__name">سوره {{ title }}</span>
       <span>{{ mecOrMed }}</span>
     </div>
   </router-link>
@@ -34,12 +32,12 @@ export default {
   &:hover {
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.2);
   }
-  .sura-name {
+  &__name {
     color: rgb(0, 26, 255);
     font-weight: 700;
   }
 
-  .sura-number {
+  &__number {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,5 +48,4 @@ export default {
     opacity: 0.8;
   }
 }
-
 </style>

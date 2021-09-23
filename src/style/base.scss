@@ -32,3 +32,26 @@ a {
     text-decoration: none;
     color: #000;
 }
+
+.selection-menu {
+    border: 1px solid cadetblue;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #000;
+    background-color: #fff;
+    position: relative;
+    margin-right: 10px;
+    font-family: Yekan, Helvetica, Arial, sans-serif;
+    padding: 5px;
+    &:focus {
+        border: 1px solid cadetblue;
+    }
+
+}
+
+.hide {
+    display: none;
+}
+.nopadding {
+    padding: 0 !important;
+}

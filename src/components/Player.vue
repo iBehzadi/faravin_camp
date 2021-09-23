@@ -36,8 +36,6 @@ export default {
           el.value.play();
          console.log(el.value)
       }
-
-
       return {
           play1,
           el

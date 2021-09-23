@@ -9,8 +9,8 @@ const store = createStore({
     state() {
         return {
             translator: 'ansarian',
-            ayaFontSize: 20,
-            trsFontSize: 18,
+            ayaFontSize: 18,
+            trsFontSize: 14,
             textFontFamily: 'Yekan',
 
         };

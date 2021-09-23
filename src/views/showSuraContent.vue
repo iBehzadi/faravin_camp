@@ -1,11 +1,12 @@
 
 <template>
-    <div class="setting-container">
+    <!-- navbar items -->
+    <div class="navbar">
         <span class="icon-menu" @click="openNav"></span>
 
-        <div class="t-selector">
+        <div class="navbar__trs-selector">
             <span>مترجم</span>
-            <select @change="translatorChanger" class="t-select" v-model="translateSelector">
+            <select @change="translatorChanger" class="selection-menu" v-model="translateSelector">
                 <option value="ansarian">انصاریان</option>
                 <option value="maleki">ملکی</option>
                 <option value="makarem">مکارم</option>
@@ -13,82 +14,88 @@
         </div>
     </div>
 
-    <div id="setting-nav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" @click="closeNav">x</a>
+    <!-- setting side menu -->
+    <div id="setting-nav" class="settings">
+        <a href="javascript:void(0)" class="settings__closebtn" @click="closeNav">x</a>
         <p>اندازه فونت</p>
-            <div class="fsize">
-                <span>عربی</span>
-                <select class="t-select" @change="ayaFontSizeChange" v-model="ayaFontSize">
-                    <option value="14">14</option>
-                    <option value="16">16</option>
-                    <option value="18">18</option>
-                    <option value="20">20</option>
-                    <option value="22">22</option>
-                    <option value="24">24</option>
-                    <option value="26">26</option>
-                    <option value="28">28</option>
-                    <option value="30">30</option>
-                </select>
-                <span>ترجمه</span>
-                <select class="t-select" @change="trsFontSizeChange" v-model="trsFontSize">
-                    <option value="14">14</option>
-                    <option value="16">16</option>
-                    <option value="18">18</option>
-                    <option value="20">20</option>
-                    <option value="22">22</option>
-                    <option value="24">24</option>
-                    <option value="26">26</option>
-                    <option value="28">28</option>
-                    <option value="30">30</option>
-                </select>
-            </div>
-            
-        <div class="text-font">
-            <span>فونت</span>
-            <select class="t-select" @change="fontChanger" v-model="fontSelector">
+        <div class="settings__fontsize">
+            <span>عربی</span>
+            <select class="selection-menu" @change="ayaFontSizeChange" v-model="ayaFontSize">
+                <option value="18">18</option>
+                <option value="20">20</option>
+                <option value="22">22</option>
+                <option value="24">24</option>
+                <option value="26">26</option>
+                <option value="28">28</option>
+                <option value="30">30</option>
+                <option value="32">32</option>
+                <option value="34">34</option>
+            </select>
+            <span>ترجمه</span>
+            <select class="selection-menu" @change="trsFontSizeChange" v-model="trsFontSize">
+                <option value="16">16</option>
+                <option value="18">18</option>
+                <option value="20">20</option>
+                <option value="22">22</option>
+                <option value="24">24</option>
+                <option value="26">26</option>
+                <option value="28">28</option>
+                <option value="30">30</option>
+            </select>
+        </div>
+
+        <div class="settings__fontfamily">
+            <span>قلم</span>
+            <select class="selection-menu" @change="fontChanger" v-model="fontSelector">
                 <option value="Yekan">یکان</option>
                 <option value="Vazir">وزیر</option>
             </select>
         </div>
-        <div class="ghari">
+        <div class="settings__ghari">
             <span>قاری</span>
-            <select class="t-select">
+            <select class="selection-menu">
                 <option value="ansarian">منشاوی</option>
                 <option value="maleki">خلیل الحصری</option>
             </select>
         </div>
     </div>
 
-    <section class="sura-container">
+    <!-- content of sura -->
+    <section class="sura-content">
         <span>سوره {{ position.name }}</span>
         <br />
         <span>محل نزول : {{ position.mecOrMed }}</span>
         <br />
-        <div class="ayas">
+        <div class="sura-content__aya nopadding">
             <span
                 :style="{ fontSize: store.state.ayaFontSize + 'px', fontFamily: store.state.textFontFamily }"
                 v-if="position.name != 'الفاتحة'"
             >بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ</span>
         </div>
         <div
-            class="ayas"
+            class="sura-content__aya"
             :style="{ fontSize: store.state.ayaFontSize + 'px', fontFamily: store.state.textFontFamily }"
             v-for="(aya, i) in ayasText"
             :key="i"
         >
-            <span class="copy icon-copy" @click="copyAya(aya, ayaTranslateText[i])"></span>
+            <div class="sura-content__context">
+                <span
+                    class="sura-content__copy icon-copy"
+                    @click="copyAya(aya, ayaTranslateText[i])"
+                ></span>
+                <span class="sura-content__play icon-play3" @click="playAudio(i)"></span>
+                <span class="sura-content__play icon-pause2 hide" @click="pauseAudio(i)"></span>
+                <span
+                    class="sura-content__share icon-share2"
+                    @click="shareText(aya, position.name, i, ayaTranslateText[i])"
+                ></span>
+            </div>
 
-            <span class="play icon-play3" @click="playAudio(i)"></span>
-            <span class="play icon-pause2 hide" @click="pauseAudio(i)"></span>
-            <span
-                class="share icon-share2"
-                @click="shareText(aya, position.name, i, ayaTranslateText[i])"
-            ></span>
-            <span class="aya">({{ aya }}).{{ i + 1 }}</span>
+            <span>({{ aya }}).{{ i + 1 }}</span>
 
             <br />
             <span
-                class="trs"
+                class="sura-content__trs"
                 :style="{ fontSize: store.state.trsFontSize + 'px' }"
             >{{ ayaTranslateText[i] }}</span>
         </div>
@@ -234,13 +241,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 @import url("../assets/icon-style.css");
 @import url("../style/base.scss");
-.sura-container {
-    margin-top: 60px;
-}
-.setting-container {
+
+.navbar {
     height: 45px;
     width: 100%;
     display: flex;
@@ -248,72 +253,21 @@ export default {
     align-items: center;
     background-color: #f3f3f4;
     position: sticky;
-    top: 48px;
+    top: 45px;
     z-index: 8;
+    &__trs-selector {
+        margin-left: 10px;
+    }
+    .icon-menu {
+        font-size: 30px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .icon-menu:hover {
+        color: blue;
+    }
 }
-.t-selector {
-    margin-left: 10px;
-}
-.t-select {
-    border: 1px solid cadetblue;
-    border-radius: 4px;
-    cursor: pointer;
-    color: #000;
-    background-color: #fff;
-    position: relative;
-    margin-right: 10px;
-    font-family: Yekan, Helvetica, Arial, sans-serif;
-    padding: 5px;
-}
-
-.t-select:focus {
-    border: 1px solid cadetblue;
-}
-.ayas {
-    font-size: responsive;
-    margin: 10px 20px;
-    padding: 10px;
-    background-color: #eef8e5;
-    border: 1px solid #d4ddcc;
-    border-top: 0px;
-    position: relative;
-    border-radius: 5px;
-    padding-top: 25px;
-}
-.ayas:hover {
-    background-color: #eef9f6;
-}
-.ayas .trs {
-    font-size: 18px;
-}
-.share,
-.copy,
-.play {
-    position: absolute;
-    cursor: pointer;
-}
-.ayas .copy {
-    left: 5px;
-    top: 5px;
-}
-.hide {
-    display: none;
-}
-.ayas .play {
-    left: 35px;
-    top: 5px;
-}
-.ayas .icon-copy:hover,
-.play:hover {
-    color: blue;
-}
-
-.share {
-    left: 65px;
-    top: 5px;
-}
-
-.sidenav {
+.settings {
     height: 30%;
     width: 0;
     position: fixed;
@@ -325,56 +279,89 @@ export default {
     overflow-x: hidden;
     transition: 0.3s;
     padding-top: 60px;
+    &__fontsize {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin: 0 20px;
+    }
+    &__closebtn {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        font-size: 36px;
+    }
+    &__fontfamily {
+        margin-top: 20px;
+    }
+    &__ghari {
+        margin-top: 20px;
+    }
+    span {
+        font-size: 18px;
+    }
+    p {
+        right: 0;
+        font-weight: 600;
+        font-size: 18px;
+    }
+    button {
+        background-color: #fbfbfb;
+        border: 1px solid #dadbde;
+        cursor: pointer;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        color: #999aa2;
+    }
 }
-
-.sidenav span {
-    padding: 0 5px;
-    font-size: 18px;
-}
-.sidenav p {
-    right: 0;
-    font-weight: 600;
-    font-size: 18px;
-}
-
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    left: 10px;
-    font-size: 36px;
-}
-.icon-menu {
-    font-size: 30px;
-    cursor: pointer;
-    margin-right: 10px;
-}
-.icon-menu:hover {
-    color: blue;
-}
-.fsize {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin: 0 20px;
-}
-
-.ghari {
-    margin-top: 20px;
-}
-.text-font {
-    margin-top: 20px;
-}
-.sidenav button {
-    background-color: #fbfbfb;
-    border: 1px solid #dadbde;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    color: #999aa2;
+.sura-content {
+    margin-top: 60px;
+    &__aya {
+        font-size: responsive;
+        margin: 10px 20px;
+        padding: 10px;
+        background-color: #eef8e5;
+        border: 1px solid #d4ddcc;
+        border-top: 0px;
+        position: relative;
+        border-radius: 5px;
+        padding-top: 25px;
+    }
+    .context {
+        position: absolute;
+        cursor: pointer;
+    }
+    &__trs {
+        font-size: 18px;
+    }
+    &__copy {
+        @extend .context;
+        left: 5px;
+        top: 5px;
+        &:hover {
+            color: blue;
+        }
+    }
+    &__play {
+        @extend .context;
+        left: 35px;
+        top: 5px;
+        &:hover {
+            color: blue;
+        }
+    }
+    &__share {
+        @extend .context;
+        left: 65px;
+        top: 5px;
+        &:hover {
+            color: blue;
+        }
+    }
 }
 @media screen and (max-height: 450px) {
-    .sidenav {
+    .settings {
         padding-top: 15px;
     }
 }
