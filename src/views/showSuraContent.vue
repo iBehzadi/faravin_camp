@@ -100,8 +100,11 @@
             >{{ ayaTranslateText[i] }}</span>
         </div>
     </section>
-
-    <Player ref="player" :source="audioSrc"></Player>
+    <div class="sura-changer">
+        <button class="sura-changer__before button" @click="beforeSura" >سوره قبل</button>
+        <button class="sura-changer__next button" @click="nextSura">سوره بعد</button>
+    </div>
+    <Player></Player>
 </template>
 
 <script lang="ts">
@@ -115,6 +118,7 @@ import { ayat } from "../qtext";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import Player from "../components/Player.vue"
+import router from "../router";
 
 
 export default {
@@ -125,9 +129,8 @@ export default {
 
         const route = useRoute();
         const store = useStore();
-        const player = ref();
         let ayaList = ayat.split('\n');
-        var audioSrc = ref('');
+        //var audioSrc = ref('');
         let ayaTranslateText;
         let translateSelector = ref(store.state.translator);
         let fontSelector = ref(store.state.textFontFamily);
@@ -195,10 +198,26 @@ export default {
         function closeNav() {
             document.getElementById("setting-nav")!.style.width = "0";
         }
+        function nextSura() {
+            let next:number = +route.params.id
+            next++
+            if(next >= 114){
+                next = 114
+            }
+            router.push({ name: 'showSuraContent', params: { id: `${next}` } });
+        }
+        function beforeSura(){
+            let before:number = +route.params.id
+            before++
+            if(before <= 0){
+                before = 1
+            }
+            router.push({ name: 'showSuraContent', params: { id: `${before}` } });
+        }
 
         //editing need
         function playAudio(i: number) {
-            audioSrc.value = `https://www.everyayah.com/data/AbdulSamad_64kbps_QuranExplorer.Com/00100${i + 1}.mp3`;
+            //audioSrc.value = `https://www.everyayah.com/data/AbdulSamad_64kbps_QuranExplorer.Com/00100${i + 1}.mp3`;
 
         }
         function pauseAudio(i: number) {
@@ -233,11 +252,12 @@ export default {
             playAudio,
             pauseAudio,
             shareText,
-            audioSrc,
             ayaFontSize,
             trsFontSize,
             trsFontSizeChange,
-            ayaFontSizeChange
+            ayaFontSizeChange,
+            nextSura,
+            beforeSura
 
         }
     }
@@ -248,6 +268,11 @@ export default {
 @import url("../assets/icon-style.css");
 @import url("../style/base.scss");
 
+.sura-changer {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
 .navbar {
     height: 45px;
     width: 100%;

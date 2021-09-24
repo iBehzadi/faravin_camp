@@ -7,17 +7,16 @@
             <input class="search__input" placeholder="جستجو" type="text" title="Search" />
             <button class="search__submit" type="submit"></button>
         </div>
-        <button id="installButton">install</button>
     </section>
 
     <section class="surah-list">
         <Sura
             :to="{ name: 'showSuraContent', params: { id: i + 1 } }"
-            v-for="(item, i) in sura"
+            v-for="(item, i) in suraList.sura"
             :key="i"
             :title="item"
-            :mec-or-med="mecOrMed[i]"
-            :number="i + 1"
+            :mec-or-med="suraList.mecOrMed[i]"
+            :numbers="i + 1"
         ></Sura>
     </section>
 </template>
@@ -25,6 +24,7 @@
 <script lang="ts">
 import { SuraList } from "../qdata";
 import Sura from "../components/sura.vue";
+import { computed } from "@vue/runtime-core";
 
 export default {
     name: 'App',
@@ -32,21 +32,21 @@ export default {
         Sura,
     },
     setup() {
-        let sura = [];
-        let mecOrMed = [];
-        for (let i = 0; i < SuraList.length; i++) {
-            sura[i] = SuraList[i][4];
-            if (SuraList[i][7] == "Meccan") {
-                mecOrMed[i] = "مکه";
-            } else {
-                mecOrMed[i] = "مدینه";
+        let suraList = computed(() => {
+            let sura =[], mecOrMed = []
+            for (let i = 0; i < SuraList.length; i++) {
+                sura[i] = SuraList[i][4];
+                if (SuraList[i][7] == "Meccan") {
+                    mecOrMed[i] = "مکه";
+                } else {
+                    mecOrMed[i] = "مدینه";
+                }
             }
-
-        }
+            return {sura, mecOrMed}
+        })
 
         return {
-            sura,
-            mecOrMed
+            suraList
         };
     },
 }

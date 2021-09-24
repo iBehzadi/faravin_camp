@@ -1,25 +1,26 @@
 <template>
   <router-link>
     <div class="sura">
-      <div class="sura__number">{{ number }}</div>
+      <div class="sura__number">{{ numbers }}</div>
       <span class="sura__name">سوره {{ title }}</span>
       <span>{{ mecOrMed }}</span>
     </div>
   </router-link>
 </template>
-
-<style>
-@import "../assets/font-faces.css";
-</style>
-
 <script lang="ts">
 export default {
-  props: ["number", "title", "mecOrMed"],
+  props: ["numbers", "title", "mecOrMed"],
+  setup(){
 
+    return {
+      
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/font-faces.css";
 .sura {
   display: flex;
   min-width: 300px;

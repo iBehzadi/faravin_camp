@@ -18,8 +18,8 @@
             <source src="https://www.everyayah.com/data/AbdulSamad_64kbps_QuranExplorer.Com/001001.mp3" type="audio/mp3">
             مرورگر شما از فایل صوتی پشتیبانی نمی کند.
         </audio> -->
-        <audio ref="el" id="audio" controls>
-            <source :src="source" type="audio/mp3">
+        <audio id="audio" controls>
+            <source type="audio/mp3">
             مرورگر شما از فایل صوتی پشتیبانی نمی کند.
         </audio>
     </div>
@@ -28,17 +28,16 @@
 <script lang="ts">
 import { ref } from 'vue'
 export default {
-  props: ["source"],
+  
   setup(){
       
       const el = ref();
       function play1(){
-          el.value.play();
-         console.log(el.value)
+         
       }
       return {
-          play1,
-          el
+          play1
+         
       }
   }
 };

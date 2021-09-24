@@ -4,8 +4,8 @@ import App from './App.vue'
 import router from "./router/index"
 import { createStore } from "vuex"
 
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./src/sw.js', {scope: './sw/'})
+/* if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js', {scope: './sw'})
     .then((reg) => {
      
       console.log('Registration succeeded. Scope is ' + reg.scope);
@@ -13,7 +13,7 @@ if ('serviceWorker' in navigator) {
       
       console.log('Registration failed with ' + error);
     });
-  }
+  } */
 
 const store = createStore({
     state() {

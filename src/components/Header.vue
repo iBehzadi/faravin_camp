@@ -6,6 +6,7 @@
             </div>
             <div class="header__homepage">
                 <router-link to="/">
+                    <span class="header__text">صفحه اصلی</span>
                     <i class="icon-home"></i>
                 </router-link>
             </div>
