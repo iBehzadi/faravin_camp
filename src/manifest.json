@@ -1,0 +1,21 @@
+{
+    "short_name": "Quran",
+    "name": "QuranApp",
+    "icons": [
+      {
+        "src": "./assets/img/qico_192x192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "./assets/img/qico_512x512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/?source=pwa",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#00ccc2",
+    "description": "a quran app project"
+  }

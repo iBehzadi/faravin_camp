@@ -7,6 +7,7 @@
             <input class="search__input" placeholder="جستجو" type="text" title="Search" />
             <button class="search__submit" type="submit"></button>
         </div>
+        <button id="installButton">install</button>
     </section>
 
     <section class="surah-list">
@@ -22,7 +23,6 @@
 </template>
 
 <script lang="ts">
-// @ts-ignore
 import { SuraList } from "../qdata";
 import Sura from "../components/sura.vue";
 

@@ -108,7 +108,9 @@
 
 import { computed, ref } from "@vue/runtime-core";
 import { SuraList } from "../qdata";
-import { ansarian, makarem, maleki } from "../assets/tarjomeh/fa.translate"
+import { ansarian } from "../assets/tarjomeh/ansarian"
+import { maleki } from "../assets/tarjomeh/maleki"
+import { makarem } from "../assets/tarjomeh/makarem"
 import { ayat } from "../qtext";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
@@ -140,6 +142,7 @@ export default {
                 return makarem.split('\n')
             }
         })
+
 
 
         function translatorChanger() {
