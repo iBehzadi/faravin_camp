@@ -4,22 +4,34 @@ import { VitePWA } from 'vite-plugin-pwa'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), VitePWA({
+    workbox: {
+      sourcemap: true,
+      clientsClaim: true,
+      skipWaiting: true
+    },
     includeAssets: ['favicon.ico', 'robots.txt'],
+    registerType: 'autoUpdate',
     manifest: {
       name: 'QuranApp',
       short_name: 'Quran',
-      description: 'a quran project',
+      description: 'a project from faravin',
       theme_color: '#00ccc2',
       icons: [
         {
-          src: 'pwa_192x192.png',
+          src: 'pwa-192x192.png',
           sizes: '192x192',
           type: 'image/png',
         },
         {
-          src: 'pwa_512x512.png',
+          src: 'pwa-512x512.png',
           sizes: '512x512',
           type: 'image/png',
+        },
+        {
+          src: 'pwa-512x512.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'any maskable',
         }
       ]
     }

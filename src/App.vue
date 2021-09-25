@@ -1,4 +1,25 @@
 <template>
+ <div
+    v-if="offlineReady || needRefresh"
+    class="pwa-toast"
+    role="alert"
+  >
+    <div class="message">
+      <span v-if="offlineReady">
+        App ready to work offline
+      </span>
+      <span v-else>
+        New content available, click on reload button to update.
+      </span>
+    </div>
+    <button v-if="needRefresh" @click="updateServiceWorker()">
+      Reload
+    </button>
+    <button @click="close">
+      Close
+    </button>
+  </div>
+
   <Header />
   <router-view></router-view>
   <Footer />
@@ -9,6 +30,8 @@ import { defineComponent } from 'vue'
 import Header from "./components/Header.vue"
 import Footer from "./components/Footer.vue"
 import { useStore } from 'vuex'
+//@ts-ignore
+import { useRegisterSW } from 'virtual:pwa-register/vue'
 
 export default defineComponent({
   name: 'App',
@@ -17,6 +40,17 @@ export default defineComponent({
     Footer
   },
   setup() {
+    const {
+      offlineReady,
+      needRefresh,
+      updateServiceWorker,
+    } = useRegisterSW()
+
+    const close = async () => {
+      offlineReady.value = false
+      needRefresh.value = false
+    }
+
     const store = useStore();
     let _fontFamily = localStorage.getItem('fontFamily');
     let _translate = localStorage.getItem('translator');
@@ -33,6 +67,12 @@ export default defineComponent({
     }
     if (_trsFontSize) {
       store.dispatch('trsFontChange', _trsFontSize);
+    }
+
+    return {
+      needRefresh,
+      updateServiceWorker,
+      offlineReady
     }
   }
 
