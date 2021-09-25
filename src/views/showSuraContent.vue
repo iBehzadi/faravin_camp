@@ -236,22 +236,22 @@ export default {
 
         }
         //wakelock
-        const lockScreen = async (): Promise<undefined | (() => void)> => {
-            if ('wakeLock' in navigator) {
-                try {
-                    const sentinel = await (navigator as any).wakeLock.request('screen');
-                    console.log('Screen lock obtained.');
-                    return () => {
-                        //sentinel.release();
-                        //console.log('Screen lock released.');
-                    }
-                } catch (error) {
-                    // Wake lock was not allowed.
-                    alert(error);
-                }
+        let wakeLock:any = null;
+        // request a screen wake lock.
+        const requestWakeLock = async () => {
+            try {
+                wakeLock = await (navigator as any).wakeLock.request();
+                wakeLock.addEventListener('release', () => {
+                    console.log('Screen Wake Lock released:', wakeLock.released);
+                });
+                console.log('Screen Wake Lock released:', wakeLock.released);
+            } catch (err) {
+                console.error(err);
             }
         };
-        lockScreen
+
+        // Request a screen wake lock…
+         requestWakeLock();
 
         return {
             ayasText,
