@@ -14,14 +14,11 @@
                 <span class="icon-previous2"></span>
             </button>
         </div>
-        <!-- <audio ref="el" id="audio" >
-            <source src="https://www.everyayah.com/data/AbdulSamad_64kbps_QuranExplorer.Com/001001.mp3" type="audio/mp3">
-            مرورگر شما از فایل صوتی پشتیبانی نمی کند.
-        </audio> -->
-        <audio id="audio" controls>
+        
+        <!-- <audio id="audio" controls>
             <source type="audio/mp3">
             مرورگر شما از فایل صوتی پشتیبانی نمی کند.
-        </audio>
+        </audio> -->
     </div>
 </template>
 
