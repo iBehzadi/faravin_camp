@@ -15,7 +15,7 @@
     </div>
 
     <!-- setting side menu -->
-    <div id="setting-nav" class="settings">
+    <div ref="settingNav" id="setting-nav" class="settings">
         <a href="javascript:void(0)" class="settings__closebtn" @click="closeNav">x</a>
         <p>اندازه فونت</p>
         <div class="settings__fontsize">
@@ -101,7 +101,7 @@
         </div>
     </section>
     <div class="sura-changer">
-        <button class="sura-changer__before button" @click="beforeSura" >سوره قبل</button>
+        <button class="sura-changer__before button" @click="beforeSura">سوره قبل</button>
         <button class="sura-changer__next button" @click="nextSura">سوره بعد</button>
     </div>
     <Player></Player>
@@ -126,16 +126,17 @@ export default {
         Player,
     },
     setup() {
-
         const route = useRoute();
         const store = useStore();
+
         let ayaList = ayat.split('\n');
-        //var audioSrc = ref('');
+        var settingNav = ref<HTMLDivElement>();
         let ayaTranslateText;
         let translateSelector = ref(store.state.translator);
         let fontSelector = ref(store.state.textFontFamily);
         let ayaFontSize = ref(store.state.ayaFontSize);
         let trsFontSize = ref(store.state.trsFontSize);
+        
         let ayaTranslate = computed(() => {
             if (store.state.translator === 'ansarian') {
                 return ansarian.split('\n')
@@ -146,8 +147,36 @@ export default {
             }
         })
 
+        //text compute
+        let position = computed(() => {
+            let sura = SuraList[+route.params.id - 1];
+            let start = sura[0];
+            let name = sura[4];
+            let mecOrMed, temp = sura[7];
+            if (temp == "Meccan") {
+                mecOrMed = "مکه";
+            } else {
+                mecOrMed = "مدینه";
+            }
+            let end = start + sura[1];
+            return { start, end, name, mecOrMed }
+        })
 
+        let ayasText = computed(() => {
+            let aya = ayaList.slice(position.value.start, position.value.end);
+            aya[0] = aya[0].replace('بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ ', '')
+            return aya;
+        })
 
+        ayaTranslateText = computed(() => ayaTranslate.value.slice(position.value.start, position.value.end))
+
+        //setting menu functions
+        function openNav() {
+            settingNav.value!.style.width = "250px";
+        }
+        function closeNav() {
+            settingNav.value!.style.width = "0";
+        }
         function translatorChanger() {
             store.dispatch('changeT', translateSelector.value);
             localStorage.setItem('translator', `${translateSelector.value}`);
@@ -164,67 +193,33 @@ export default {
             store.dispatch('trsFontChange', trsFontSize.value);
             localStorage.setItem('trsFontSize', `${trsFontSize.value}`);
         }
-        let position = computed(() => {
-            let sura = SuraList[+route.params.id - 1];
-            let start = sura[0];
-            let name = sura[4];
-            let mecOrMed, temp = sura[7];
-            if (temp == "Meccan") {
-                mecOrMed = "مکه";
-            } else {
-                mecOrMed = "مدینه";
-            }
-            let end = start + sura[1];
-            return { start, end, name, mecOrMed }
-        })
 
-        function copyAya(aya: string, trs: string) {
-            navigator.clipboard.writeText(aya + "/" + trs);
-
-        }
-
-        let ayasText = computed(() => {
-            let aya = ayaList.slice(position.value.start, position.value.end);
-            aya[0] = aya[0].replace('بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ ', '')
-            return aya;
-        })
-
-        ayaTranslateText = computed(() => ayaTranslate.value.slice(position.value.start, position.value.end))
-
-        function openNav() {
-            document.getElementById("setting-nav")!.style.width = "250px"
-        }
-
-        function closeNav() {
-            document.getElementById("setting-nav")!.style.width = "0";
-        }
+        //sura change functions
         function nextSura() {
-            let next:number = +route.params.id
+            let next: number = +route.params.id
             next++
-            if(next >= 114){
+            if (next >= 114) {
                 next = 114
             }
             router.push({ name: 'showSuraContent', params: { id: `${next}` } });
         }
-        function beforeSura(){
-            let before:number = +route.params.id
+        function beforeSura() {
+            let before: number = +route.params.id
             before++
-            if(before <= 0){
+            if (before <= 0) {
                 before = 1
             }
             router.push({ name: 'showSuraContent', params: { id: `${before}` } });
         }
 
-        //editing need
+        //audio player // notwork!!
         function playAudio(i: number) {
             //audioSrc.value = `https://www.everyayah.com/data/AbdulSamad_64kbps_QuranExplorer.Com/00100${i + 1}.mp3`;
-
         }
         function pauseAudio(i: number) {
 
         }
-
-        //sharing aya
+        //sharing and copy functions
         async function shareText(aya: string, name: string, number: number, translate: string) {
             let shareData = {
                 title: 'QuranApp',
@@ -232,11 +227,15 @@ export default {
             }
             try {
                 await navigator.share(shareData)
-                console.log('success')
             } catch (err) {
-                console.log(err)
+                console.log('sharing got error :' + err);
             }
         }
+        function copyAya(aya: string, trs: string) {
+            navigator.clipboard.writeText(aya + "/" + trs);
+
+        }
+
         return {
             ayasText,
             ayaTranslateText,
@@ -257,7 +256,8 @@ export default {
             trsFontSizeChange,
             ayaFontSizeChange,
             nextSura,
-            beforeSura
+            beforeSura,
+            settingNav
 
         }
     }

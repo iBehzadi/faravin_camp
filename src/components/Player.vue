@@ -4,7 +4,7 @@
             <button>
                 <span class="icon-next2"></span>
             </button>
-            <button class="play" @click="play1">
+            <button class="play">
                 <span class="icon-play3"></span>
             </button>
             <button class="stop p-hide">
@@ -14,29 +14,26 @@
                 <span class="icon-previous2"></span>
             </button>
         </div>
-        
-        <!-- <audio id="audio" controls>
+
+        <audio ref="audioElement" id="audio" controls>
             <source type="audio/mp3">
             مرورگر شما از فایل صوتی پشتیبانی نمی کند.
-        </audio> -->
+        </audio>
     </div>
 </template>
 
 <script lang="ts">
-import { ref } from 'vue'
+//import { ref } from 'vue'
 export default {
-  
-  setup(){
-      
-      const el = ref();
-      function play1(){
-         
-      }
-      return {
-          play1
-         
-      }
-  }
+
+    setup() {
+        //let audioElement = ref<HTMLAudioElement>();
+        
+        return {
+
+
+        }
+    }
 };
 </script>
 
