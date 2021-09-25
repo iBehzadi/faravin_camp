@@ -235,16 +235,15 @@ export default {
             navigator.clipboard.writeText(aya + "/" + trs);
 
         }
-        /* const lockScreen = async (): Promise<undefined | (() => void)> => {
+        //wakelock
+        const lockScreen = async (): Promise<undefined | (() => void)> => {
             if ('wakeLock' in navigator) {
                 try {
-                    const sentinel = await navigator.wakeLock.request('screen');
-
+                    const sentinel = await (navigator as any).wakeLock.request('screen');
                     console.log('Screen lock obtained.');
-
                     return () => {
-                        sentinel.release();
-                        console.log('Screen lock released.');
+                        //sentinel.release();
+                        //console.log('Screen lock released.');
                     }
                 } catch (error) {
                     // Wake lock was not allowed.
@@ -252,8 +251,7 @@ export default {
                 }
             }
         };
-        lockScreen */
-
+        lockScreen
 
         return {
             ayasText,
