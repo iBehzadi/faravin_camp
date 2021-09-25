@@ -109,7 +109,7 @@
 
 <script lang="ts">
 
-import { computed, ref } from "@vue/runtime-core";
+import { computed, inject, ref } from "@vue/runtime-core";
 import { SuraList } from "../qdata";
 import { ansarian } from "../assets/tarjomeh/ansarian"
 import { maleki } from "../assets/tarjomeh/maleki"
@@ -128,6 +128,11 @@ export default {
     setup() {
         const route = useRoute();
         const store = useStore();
+        const toast = inject("WKToast");
+        const pushMessage = (msg: string) => {
+            //@ts-ignore
+            toast(msg);
+        };
 
         let ayaList = ayat.split('\n');
         var settingNav = ref<HTMLDivElement>();
@@ -232,17 +237,22 @@ export default {
             }
         }
         function copyAya(aya: string, trs: string) {
-            navigator.clipboard.writeText(aya + "/" + trs);
+            try {
+                navigator.clipboard.writeText(aya + "/" + trs);
+                pushMessage("آیه کپی شد");
+            } catch {
+                postMessage("انجام نشد!")
+            }
 
         }
         //wakelock
-        let wakeLock:any = null;
+        let wakeLock: any = null;
         // request a screen wake lock.
         const requestWakeLock = async () => {
             try {
                 wakeLock = await (navigator as any).wakeLock.request();
                 wakeLock.addEventListener('release', () => {
-                    console.log('Screen Wake Lock released:', wakeLock.released);
+                    console.log('Screen Wake Lock released?:', wakeLock.released);
                 });
                 console.log('Screen Wake Lock released:', wakeLock.released);
             } catch (err) {
@@ -251,7 +261,7 @@ export default {
         };
 
         // Request a screen wake lock…
-         requestWakeLock();
+        requestWakeLock();
 
         return {
             ayasText,
@@ -274,7 +284,8 @@ export default {
             ayaFontSizeChange,
             nextSura,
             beforeSura,
-            settingNav
+            settingNav,
+            pushMessage
 
         }
     }

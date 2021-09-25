@@ -3,6 +3,8 @@ import App from './App.vue'
 
 import router from "./router/index"
 import { createStore } from "vuex"
+import Toast from 'vue3-toast-single'
+import 'vue3-toast-single/dist/toast.css'
 
 /* if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js', {scope: './'})
@@ -57,4 +59,4 @@ const store = createStore({
     }
 });
 
-createApp(App).use(router).use(store).mount('#app')
+createApp(App).use(router).use(store).use((Toast as any), { verticalPosition: "bottom", duration: 1500 }).mount('#app')
