@@ -136,7 +136,7 @@ export default {
         let fontSelector = ref(store.state.textFontFamily);
         let ayaFontSize = ref(store.state.ayaFontSize);
         let trsFontSize = ref(store.state.trsFontSize);
-        
+
         let ayaTranslate = computed(() => {
             if (store.state.translator === 'ansarian') {
                 return ansarian.split('\n')
@@ -235,6 +235,25 @@ export default {
             navigator.clipboard.writeText(aya + "/" + trs);
 
         }
+        /* const lockScreen = async (): Promise<undefined | (() => void)> => {
+            if ('wakeLock' in navigator) {
+                try {
+                    const sentinel = await navigator.wakeLock.request('screen');
+
+                    console.log('Screen lock obtained.');
+
+                    return () => {
+                        sentinel.release();
+                        console.log('Screen lock released.');
+                    }
+                } catch (error) {
+                    // Wake lock was not allowed.
+                    alert(error);
+                }
+            }
+        };
+        lockScreen */
+
 
         return {
             ayasText,

@@ -15,10 +15,10 @@
             </button>
         </div>
 
-        <audio ref="audioElement" id="audio" controls>
+        <!-- <audio ref="audioElement" id="audio" controls>
             <source type="audio/mp3">
             مرورگر شما از فایل صوتی پشتیبانی نمی کند.
-        </audio>
+        </audio> -->
     </div>
 </template>
 
