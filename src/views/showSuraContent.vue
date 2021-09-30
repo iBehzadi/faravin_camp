@@ -111,15 +111,11 @@
 
 import { computed, inject, ref } from "@vue/runtime-core";
 import { SuraList } from "../qdata";
-import { ansarian } from "../assets/tarjomeh/ansarian"
-import { maleki } from "../assets/tarjomeh/maleki"
-import { makarem } from "../assets/tarjomeh/makarem"
-import { ayat } from "../qtext";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import Player from "../components/Player.vue"
 import router from "../router";
-
+import { ayat } from "../qtext";
 
 export default {
     components: {
@@ -137,18 +133,19 @@ export default {
         let ayaList = ayat.split('\n');
         var settingNav = ref<HTMLDivElement>();
         let ayaTranslateText;
-        let translateSelector = ref(store.state.translator);
+        let translateSelector = ref(store.state.translatorName);
         let fontSelector = ref(store.state.textFontFamily);
         let ayaFontSize = ref(store.state.ayaFontSize);
         let trsFontSize = ref(store.state.trsFontSize);
 
         let ayaTranslate = computed(() => {
-            if (store.state.translator === 'ansarian') {
-                return ansarian.split('\n')
-            } else if (store.state.translator === 'maleki') {
-                return maleki
+            if (store.state.translatorName === 'ansarian') {
+                return store.state.translator.split('\n');
+            } else if (store.state.translatorName === 'maleki') {
+                return store.state.translator.split('\n')
             } else {
-                return makarem.split('\n')
+                return store.state.translator.split('\n')
+                
             }
         })
 
@@ -184,6 +181,7 @@ export default {
         }
         function translatorChanger() {
             store.dispatch('changeT', translateSelector.value);
+            store.dispatch('dynamicImport',translateSelector.value);
             localStorage.setItem('translator', `${translateSelector.value}`);
         }
         function fontChanger() {
@@ -252,9 +250,9 @@ export default {
             try {
                 wakeLock = await (navigator as any).wakeLock.request();
                 wakeLock.addEventListener('release', () => {
-                    console.log('Screen Wake Lock released?:', wakeLock.released);
+                    //console.log('Screen Wake Lock released?:', wakeLock.released);
                 });
-                console.log('Screen Wake Lock released:', wakeLock.released);
+                //console.log('Screen Wake Lock released:', wakeLock.released);
             } catch (err) {
                 console.error(err);
             }

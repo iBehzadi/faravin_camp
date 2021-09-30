@@ -40,6 +40,8 @@ export default defineComponent({
     Footer
   },
   setup() {
+
+    
     const {
       offlineReady,
       needRefresh,
@@ -61,6 +63,7 @@ export default defineComponent({
     }
     if (_translate) {
       store.dispatch('changeT', _translate);
+      store.dispatch('dynamicImport',_translate);
     }
     if (_ayaFontSize) {
       store.dispatch('ayaFontChange', _ayaFontSize);
